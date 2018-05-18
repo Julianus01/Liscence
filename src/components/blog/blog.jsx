@@ -18,6 +18,7 @@ class Blog extends Component {
 
         this.db = firebase.database().ref('blog/posts');
         this.storage = firebase.storage();
+        console.log('Branch commit');
     }
 
     render() {
