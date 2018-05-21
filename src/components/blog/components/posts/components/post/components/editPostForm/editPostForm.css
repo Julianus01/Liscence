@@ -1,3 +1,13 @@
 .editPostForm-wrapper{
-    width: 20em;
+    width: 40em;
+}
+
+.editPostForm-header{
+    height: 7em;
+    background-color: aqua;
+}
+
+.editPostForm-body{
+    margin: 2em;
+    margin-bottom: 5em;
 }

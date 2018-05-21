@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './editPostForm.css';
-import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
+import NO_IMAGE from '../../../../../../../../images/no_image.png';
 
 class EditPostForm extends Component {
 
@@ -10,46 +10,48 @@ class EditPostForm extends Component {
         this.state = {
             ...props
         }
-        
+
     }
 
     render() {
         return (
-            <div className='editPostForm-wrapper'>
-                    <FormGroup controlId="formBasicText">
-                        <h2>Edit your post</h2>
+            <div className="editPostForm-wrapper">
 
-                        <ControlLabel>Title:</ControlLabel>
-                        <FormControl
+                <div className="editPostForm-header">
+                    <h2 className='header'>Edit Post</h2>
+                </div>
+
+                <div className="editPostForm-body">
+                    <div className="form-group">
+                        <label>Title:</label>
+                        <input
                             type="text"
-                            placeholder="Title"
-                            value={this.state.title}
+                            className='form-control'
+                            placeholder="Enter new title here"
                             onChange={this.handleTitleInput}
-                        />
+                            value={this.state.title} />
+                    </div>
 
-                        {/* <ControlLabel>Title:</ControlLabel>
-                        <FormControl
-                            type="text"
-                            placeholder="Title"
-                            value={this.state.title}
-                        /> */}
+                    <div className="form-group">
+                        <img src={this.state.imgSrc ? (this.state.imgSrc) : (NO_IMAGE)} alt="" />
+                    </div>
 
-                        <ControlLabel>Text:</ControlLabel>
-                        <textarea 
-                            cols="30" 
-                            rows="15"
-                            placeholder='Text'
+                    <div className="form-group">
+                        <label>Content:</label>
+                        <textarea
+                            className="form-control"
+                            rows="3"
                             value={this.state.text}
                             onChange={this.handleTextInput}>
-
                         </textarea>
+                    </div>
 
+                    <div className="form-group">
+                        <button className='btn btn-success float-right'
+                            onClick={this.updatePost}>Save</button>
+                    </div>
+                </div>
 
-                        <FormControl.Feedback />
-
-                        <Button bsStyle='primary' onClick={this.updatePost}>Save</Button>
-
-                    </FormGroup>
             </div>
         )
     }
@@ -82,8 +84,6 @@ class EditPostForm extends Component {
             imgSrc: ''
         })
     }
-
-    // Lifecycle
 
 }
 

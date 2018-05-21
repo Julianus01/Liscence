@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './galleryImage.css';
+import no_image from '../../../../images/no_image.png';
 
 class GalleryImage extends Component{
     constructor(props){
@@ -14,7 +15,7 @@ class GalleryImage extends Component{
         
         return(
             <div>
-                <img src={this.state.image.imgSrc}/>
+                <img src={this.state.image.imgSrc} alt={no_image}/>
             </div>
         )
     }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import './db_config/db_config'; // DB_CONFIG
 import Navbar from './components/navbar/navbar.jsx';
-import Users from './components/users/users.jsx';
 import Home from './components/home/home.jsx';
 import Blog from './components/blog/blog.jsx';
 
