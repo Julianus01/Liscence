@@ -3,7 +3,8 @@ import './blog.css';
 import firebase from 'firebase';
 import PostForm from './components/postForm/postForm.jsx';
 import Modal from 'react-responsive-modal';
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button'
 import Posts from './components/posts/posts.jsx';
 
 class Blog extends Component {
@@ -24,8 +25,8 @@ class Blog extends Component {
 
         return (
             <div>
-                <h1>Blog Page Bici</h1>
-                <Button bsStyle='primary' onClick={this.onOpenModal}>
+                <h1>Blog Page</h1>
+                <Button variant='raised' color='secondary' onClick={this.onOpenModal}>
                     Add Post
                 </Button>
                 <Modal
