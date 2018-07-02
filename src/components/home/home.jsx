@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './home.css';
 import Gallery from './subcomponents/gallery/gallery.jsx';
 import ImageForm from './subcomponents/imageForm/imageForm.jsx';
 import firebase from 'firebase';
