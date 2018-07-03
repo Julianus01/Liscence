@@ -39,6 +39,7 @@ class PostForm extends Component {
         )
     }
 
+    // HANDLE INPUT CHANGE
     handleInputTitleChange = (event) => {
         this.setState({
             title: event.target.value
@@ -57,18 +58,9 @@ class PostForm extends Component {
         });
     }
 
-    // addPost = () => {
-    //     this.props.addPost(this.state);
-
-    //     this.setState({
-    //         title: '',
-    //         image: null,
-    //         text: ''
-    //     })
-    // }
-
     addPost = () => {
         var post = this.state;
+        console.log(post);
 
         var key = this.db.push().key;
         var storageRef = this.storage.ref('blog/posts/' + key);

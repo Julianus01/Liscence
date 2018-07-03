@@ -1,7 +1,27 @@
 import React, { Component } from 'react';
-import './posts.css';
 import firebase from 'firebase';
 import Post from './components/post/post.jsx';
+import PropTypes from 'prop-types'
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import { key } from "firebase-key";
+
+const styles = theme => ({
+    root: {
+        flexRow: 1,
+    },
+})
+
+const customStyles = {
+    postsContainer: {
+        // display: 'grid',
+        // gridRowGap: '4rem',
+        margin: '2rem 0 10rem 0'
+    },
+    maxWidth: {
+        maxWidth: 1200
+    }
+}
 
 class Posts extends Component {
     constructor() {
@@ -16,24 +36,33 @@ class Posts extends Component {
     }
 
     render() {
+        const { classes } = this.props;
+
         return (
-            <div className="posts-list">
-                {this.state.posts.map(post => {
-                    return (
-                        <Post key={post.id} id={post.id} title={post.title}
-                            imgSrc={post.imgSrc} text={post.text}
-                            updatePost={this.updatePost} />
-                    )
-                })}
-            </div>
+            <Grid container>
+                <Grid container justify='center' style={customStyles.postsContainer}>
+                    {this.state.posts.map(post => {
+                        return (
+                            <Grid item key={post.id}
+                                xs={12} sm={6} md={6} lg={12}
+                                style={customStyles.maxWidth}>
+                                <Post key={post.id} id={post.id}
+                                    title={post.title} imgSrc={post.imgSrc}
+                                    text={post.text}
+                                    updatePost={this.updatePost}
+                                    deletePost={this.deletePost} />
+                            </Grid>
+                        )
+                    })}
+                </Grid>
+            </Grid>
         )
     }
 
     componentWillMount() {
-        var posts = this.state.posts;
-        var valuePosts = [];
-
         this.db.on('child_added', snap => {
+            let posts = this.state.posts;
+
             posts.unshift({
                 id: snap.key,
                 title: snap.val().title,
@@ -45,7 +74,7 @@ class Posts extends Component {
         })
 
         this.db.on('child_changed', snap => {
-            var posts = this.state.posts;
+            let posts = this.state.posts;
 
             var index = this.state.posts.findIndex(post => post.id === snap.key);
 
@@ -56,37 +85,22 @@ class Posts extends Component {
                 posts: posts
             })
         })
+
+        this.db.on('child_removed', snap => {
+            let posts = this.state.posts.filter(post => {
+                return post.id !== snap.key
+            });
+
+            this.setState({ posts });
+        })
     }
 
-    addPost = (post) => {
-        var key = this.db.push().key;
-        var storageRef = this.storage.ref('blog/posts/' + key);
+    deletePost = (post) => {
+        this.db.child(post.id).remove();
 
-        if (post.image != null) {
-            var uploadTask = storageRef.put(post.image);
-            uploadTask.on('state_changed', snap => {
-
-            }, (err) => {
-
-            }, () => {
-                var downloadUrl = uploadTask.snapshot.downloadURL;
-                var newPost = this.db.child(key);
-                newPost.set({
-                    title: post.title,
-                    imgSrc: downloadUrl,
-                    text: post.text
-                })
-            });
-        } else {
-            let postKey = this.db.push().key;
-            this.db.child(postKey).set({
-                title: post.title,
-                text: post.text,
-                imgSrc: ''
-            })
+        if (post.imgSrc) {
+            this.storage.ref('blog/posts/').child(post.id).delete();
         }
-
-        this.setState({ addPostModalShow: false })
     }
 
     updatePost = (post) => {
@@ -95,7 +109,32 @@ class Posts extends Component {
             text: post.text,
             imgSrc: post.imgSrc
         });
+
+        if (post.imgFile !== null) {
+            var storageRef = this.storage.ref('blog/posts/' + post.id)
+
+            if (post.imgSrc !== '') {
+                storageRef.put(post.imgFile)
+            } else {
+                var uploadTask = storageRef.put(post.imgFile);
+                uploadTask.on('state_changed', snap => {
+
+                }, (err) => {
+
+                }, () => {
+                    var downloadUrl = uploadTask.snapshot.downloadURL;
+                    var postToEdit = this.db.child(post.id);
+                    postToEdit.update({
+                        imgSrc: downloadUrl,
+                    })
+                });
+            }
+        }
     }
 }
 
-export default Posts;
+Posts.propTypes = {
+    classes: PropTypes.object.isRequired
+}
+
+export default withStyles(styles)(Posts);

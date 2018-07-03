@@ -6,3 +6,22 @@
 .post-container > img{
     margin: auto;
 }
+
+.post-content{
+    padding: 2rem;
+    text-align: left;
+}
+
+.postImg{
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.custom-overlay{
+}
+
+.custom-modal{
+    padding: 0;
+    margin: 0;
+}
